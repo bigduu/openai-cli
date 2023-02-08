@@ -1,0 +1,25 @@
+[package]
+name = "openai"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# runtime commone
+tokio = { version = "1.23.0", features = ["full"] }
+anyhow = "1.0.66"
+async-trait = "0.1.59"
+
+# logger
+tracing = "0.1.37"
+tracing-subscriber = "0.3.16"
+
+# web
+reqwest = { version = "0.11.13", features = ["json"] }
+uuid = { version = "1.2.2", features = ["serde", "v4"] }
+
+# serde
+serde = { version = "1.0.149", features = ["derive"] }
+serde_json = { version = "1.0.89" }
+serde_yaml = { version = "0.9.14" }
