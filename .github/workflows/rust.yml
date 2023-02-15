@@ -30,4 +30,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}
-          path: ${{ github.workspace }}/target/release/openai*
+          path: |
+          ${{ github.workspace }}/target/release/openai*
+          ${{ github.workspace }}/application.yml
