@@ -18,6 +18,10 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './target'
       - uses: actions-rs/cargo@v1
         with:
           command: build
