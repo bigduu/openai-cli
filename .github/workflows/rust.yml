@@ -31,5 +31,5 @@ jobs:
         with:
           name: ${{ matrix.os }}
           path: |
-          ${{ github.workspace }}/target/release/openai*
-          ${{ github.workspace }}/application.yml
+            ${{ github.workspace }}/target/release/openai*
+            ${{ github.workspace }}/application.yml
