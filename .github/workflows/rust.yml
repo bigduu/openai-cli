@@ -1,10 +1,6 @@
 name: Rust
 
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+on: push
 
 jobs:
   release:
@@ -20,16 +16,21 @@ jobs:
           toolchain: stable
       - name: Rust cache
         uses: swatinem/rust-cache@v2
-        with:
-          workspaces: './target'
       - uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release --all-features
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+      - name: Tar files
+        run: tar -cvf ${{matrix.os}}-release.tar target/release/open*
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          name: ${{ matrix.os }}
-          path: |
-            ${{ github.workspace }}/target/release/openai*
-            ${{ github.workspace }}/application.yml
+          files: ${{matrix.os}}-release.tar
+#       - name: Upload artifact
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: ${{ matrix.os }}
+#           path: |
+#             ${{ github.workspace }}/target/release/openai*
+#             ${{ github.workspace }}/application.yml
