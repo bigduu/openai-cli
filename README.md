@@ -12,7 +12,7 @@
    ![img_3.png](img/img_3.png)
 5. 填入API token  
 ![img_4.png](img/img_4.png)
-6. 将下载的二进制文件 和 applicaiton.yml 放在同一个目录下 [下载地址](https://github.com/bigduu/openai-cli/actions/runs/4175687798) 滑到最下面  
+6. 下载的二进制文件输入token [下载地址](https://github.com/bigduu/openai-cli/actions/runs/4175687798) 滑到最下面  
 ![image](https://user-images.githubusercontent.com/18681616/219084564-4ba79f53-d0b8-499a-9de1-f130ed441db2.png)
 7. 输入问题 得到答案  
 ![image](https://user-images.githubusercontent.com/18681616/219084688-f6b63818-5ff7-40c1-a19a-84649c03c3fb.png)
