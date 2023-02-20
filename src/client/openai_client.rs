@@ -2,6 +2,7 @@
 
 use anyhow::{Ok, Result};
 use reqwest::header::HeaderMap;
+use tracing::error;
 
 use crate::domain::openai::{answers::Answers, model::Model, question::Question};
 
@@ -57,6 +58,10 @@ impl OpenAIClient {
             .send()
             .await
             .expect("Failed to send request");
+        if !response.status().is_success() {
+            error!("Failed to send request: {}", response.text().await.unwrap());
+            return Ok(Answers::default());
+        }
         let ans = response
             .json::<Answers>()
             .await

@@ -22,3 +22,7 @@ Cargo.lock
 *.iml
 out
 gen
+
+.DS_Store
+
+application.yml

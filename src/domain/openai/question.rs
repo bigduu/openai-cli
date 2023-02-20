@@ -1,4 +1,4 @@
-#![allow(dead_code)]
+#![allow(dead_code, clippy::too_many_arguments)]
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
@@ -53,7 +53,7 @@ impl Question {
         Self {
             model,
             prompt,
-            max_tokens: 4000,
+            max_tokens: 1024,
             temperature: 1,
             top_p: 1,
             n: 1,
