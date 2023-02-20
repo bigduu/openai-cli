@@ -40,6 +40,7 @@ impl OpenAIInfo {
             Err(e) => {
                 let mut default_mut = OpenAIInfo::default();
                 let mut token = String::new();
+                open_url();
                 println!("Please input your token:");
                 std::io::stdin()
                     .read_line(&mut token)
@@ -58,6 +59,18 @@ impl OpenAIInfo {
         };
 
         Ok(file)
+    }
+}
+
+fn open_url() {
+    match webbrowser::open("https://beta.openai.com/account/api-keys") {
+        Ok(_) => {}
+        Err(e) => {
+            error!(
+                "Occurred error when opening url: {}, please open it manually",
+                e
+            );
+        }
     }
 }
 
