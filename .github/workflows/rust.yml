@@ -1,6 +1,9 @@
 name: Rust
 
-on: push
+on:
+  push:
+    tags:
+      - "v*.*.*"
 
 jobs:
   release:
@@ -21,7 +24,7 @@ jobs:
           command: build
           args: --release --all-features
       - name: Tar files
-        run: tar -cvf ${{matrix.os}}-release.tar target/release/open*
+        run: tar -cvf ${{matrix.os}}-release.tar target/release/open* LICENSE.md
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
