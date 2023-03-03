@@ -1,14 +1,25 @@
 #![allow(dead_code, clippy::too_many_arguments)]
 use serde::Deserialize;
 use serde::Serialize;
-use serde_json::Value;
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Message {
+    role: String,
+    content: String,
+}
+
+impl Message {
+    pub fn new(role: String, content: String) -> Self {
+        Self { role, content }
+    }
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Question {
     // required
     pub model: String,
-    pub prompt: String,
+    pub messages: Vec<Message>,
     #[serde(rename = "max_tokens")]
     pub max_tokens: i64,
     pub temperature: i64,
@@ -17,7 +28,7 @@ pub struct Question {
     // How many completions to generate for each prompt.
     pub n: i64,
     pub stream: bool,
-    pub logprobs: Value,
+    // pub logprobs: Value,
     pub stop: String,
     pub user: String,
 }
@@ -25,40 +36,38 @@ pub struct Question {
 impl Question {
     pub fn new(
         model: String,
-        prompt: String,
+        messages: Vec<Message>,
         max_tokens: i64,
         temperature: i64,
         top_p: i64,
         n: i64,
         stream: bool,
-        logprobs: Value,
         stop: String,
         user: String,
     ) -> Self {
         Self {
             model,
-            prompt,
+            messages,
             max_tokens,
             temperature,
             top_p,
             n,
             stream,
-            logprobs,
             stop,
             user,
         }
     }
 
-    pub fn new_with_default(model: String, prompt: String, user: String) -> Self {
+    pub fn new_with_default(model: String, messages: String, user: String) -> Self {
+        let messages = vec![Message::new("user".to_string(), messages)];
         Self {
             model,
-            prompt,
+            messages,
             max_tokens: 1024,
             temperature: 1,
             top_p: 1,
             n: 1,
             stream: false,
-            logprobs: Value::Null,
             stop: "###".to_string(),
             user,
         }
@@ -72,13 +81,12 @@ impl Question {
 #[derive(Debug, Default)]
 pub struct QuestionBuilder {
     model: String,
-    prompt: String,
+    prompt: Vec<Message>,
     max_tokens: i64,
     temperature: i64,
     top_p: i64,
     n: i64,
     stream: bool,
-    logprobs: Value,
     stop: String,
     user: String,
 }
@@ -87,13 +95,12 @@ impl QuestionBuilder {
     fn new() -> Self {
         Self {
             model: "".to_string(),
-            prompt: "".to_string(),
+            prompt: vec![Message::new("user".to_string(), "".to_string())],
             max_tokens: 0,
             temperature: 0,
             top_p: 0,
             n: 0,
             stream: false,
-            logprobs: Value::Null,
             stop: "".to_string(),
             user: "".to_string(),
         }
@@ -108,7 +115,6 @@ impl QuestionBuilder {
             self.top_p,
             self.n,
             self.stream,
-            self.logprobs,
             self.stop,
             self.user,
         )
@@ -120,7 +126,7 @@ impl QuestionBuilder {
     }
 
     pub fn prompt(mut self, prompt: String) -> Self {
-        self.prompt = prompt;
+        self.prompt = vec![Message::new("user".to_string(), prompt)];
         self
     }
 
@@ -146,11 +152,6 @@ impl QuestionBuilder {
 
     pub fn stream(mut self, stream: bool) -> Self {
         self.stream = stream;
-        self
-    }
-
-    pub fn logprobs(mut self, logprobs: Value) -> Self {
-        self.logprobs = logprobs;
         self
     }
 

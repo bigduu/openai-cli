@@ -34,3 +34,5 @@ serde_yaml = { version = "0.9.14" }
 
 # utils
 webbrowser = "0.8.7"
+
+lazy_static = "1.4.0"

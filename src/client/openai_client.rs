@@ -4,15 +4,15 @@ use anyhow::{Ok, Result};
 use reqwest::header::HeaderMap;
 use tracing::error;
 
-use crate::domain::openai::{answers::Answers, model::Model, question::Question};
+use crate::domain::openai::{answers::Answers, question::Question};
 
 #[derive(Debug)]
-pub struct OpenAIClient {
+pub struct OpenAIChatClient {
     client: reqwest::Client,
     api_domain: String,
 }
 
-impl OpenAIClient {
+impl OpenAIChatClient {
     /// Creates a new [`OpenAIClient`].
     ///
     ///
@@ -37,20 +37,10 @@ impl OpenAIClient {
         Self { client, api_domain }
     }
 
-    pub async fn get_models(&self) -> Result<Model> {
-        let endpoint = format!("{}/v1/models", self.api_domain);
-        let response = self.client.get(endpoint.as_str()).send().await?;
-        let model: Model = response.json().await?;
-        Ok(model)
-    }
-
     pub async fn query(&self, question: String) -> Result<Answers> {
-        let question = Question::new_with_default(
-            "text-davinci-003".to_string(),
-            question,
-            "bigduu".to_string(),
-        );
-        let endpoint = format!("{}/v1/completions", self.api_domain);
+        let question =
+            Question::new_with_default("gpt-3.5-turbo".to_string(), question, "bigduu".to_string());
+        let endpoint = format!("{}/v1/chat/completions", self.api_domain);
         let response = self
             .client
             .post(endpoint.as_str())
